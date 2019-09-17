@@ -15,20 +15,6 @@
 
 <script>
   $(function(){
-    $('#new-form').submit(function(event) {
-      event.preventDefault();
-      // console.log("intercepted.");
-      var textbox = $('.new-todo');
-      var payload = {
-        task: {
-          title: textbox.val()
-        }
-      };
-      // console.log("Task: ", textbox.val());
-      $.post("/tasks", payload).success(function(data) {
-        console.log("Successful HTTP Request");
-      });
-    });
     // The taskHtml method takes in a JavaScript representation 
     // of the task and produces an HTML representation using 
     // <li> tags
@@ -54,7 +40,7 @@
       $.post("/tasks/" + itemId, {
         _method: "PUT",
         task: {
-          done: doneVAlue
+          done: doneValue
         }
       });
     }
@@ -77,18 +63,38 @@
       //$('.toggle').change(function() {
       //  console.log("Toggle!");
       //});
-      $('.toggle').change(function(e) {
-        var itemId = $(e.target).data("id");
-        console.log(itemId);
-        var doneValue = Boolean($(e.target).is(':checked'));
-        console.log("done:", doneValue);
-        $.post("/tasks/" + itemId, {
-          _method: "PUT",
-          task: {
-            done: doneValue
-          }
-        });
+      // $('.toggle').change(function(e) {
+      //   var itemId = $(e.target).data("id");
+      //   console.log(itemId);
+      //   var doneValue = Boolean($(e.target).is(':checked'));
+      //   console.log("done:", doneValue);
+      //   $.post("/tasks/" + itemId, {
+      //     _method: "PUT",
+      //     task: {
+      //       done: doneValue
+      //    }
+      //   });
+      // });
+      $('.toggle').change(toggleTask);
+    });
+    $('#new-form').submit(function(event) {
+      event.preventDefault();
+      // console.log("intercepted.");
+      var textbox = $('.new-todo');
+      var payload = {
+        task: {
+          title: textbox.val()
+        }
+      };
+      // console.log("Task: ", textbox.val());
+      $.post("/tasks", payload).success(function(data) {
+        var htmlString = taskHtml(data);
+        // console.log(data);
+        // console.log(htmlString);
+        var ulTodos = $('.todo-list');
+        ulTodos.append(htmlString);
+        $('.toggle').change(toggleTask);
       });
     });
-  })
+  });
 </script>
