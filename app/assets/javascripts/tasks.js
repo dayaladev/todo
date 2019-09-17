@@ -77,7 +77,9 @@
         // console.log(htmlString);
         var ulTodos = $('.todo-list');
         ulTodos.append(htmlString);
-        $('.toggle').change(toggleTask);
+        // $('.toggle').change(toggleTask);
+        $('.toggle').click(toggleTask);
+        $('.new-todo').val('');
       });
     });
   });
